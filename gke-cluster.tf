@@ -1,5 +1,5 @@
 resource "google_container_cluster" "cluster" {
-  provider = "google-beta"
+  provider = google-beta
 
   name     = var.cluster_name
   project  = var.project_id
@@ -11,18 +11,12 @@ resource "google_container_cluster" "cluster" {
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
 
-  // Decouple the default node pool lifecycle from the cluster object lifecycle
-  // by removing the node pool and specifying a dedicated node pool in a
-  // separate resource below.
+
   remove_default_node_pool = "true"
   initial_node_count       = 1
 
   // Configure various addons
   addons_config {
-    // Disable the Kubernetes dashboard, which is often an attack vector. The
-    // cluster can still be managed via the GKE UI.
-
-    // Enable network policy (Calico)
     network_policy_config {
       disabled = false
     }
@@ -33,9 +27,6 @@ resource "google_container_cluster" "cluster" {
     identity_namespace = format("%s.svc.id.goog", var.project_id)
   }
 
-  // Disable basic authentication and cert-based authentication.
-  // Empty fields for username and password are how to "disable" the
-  // credentials from being generated.
   master_auth {
     username = ""
     password = ""
@@ -53,7 +44,6 @@ resource "google_container_cluster" "cluster" {
 
   // Allocate IPs in our subnetwork
   ip_allocation_policy {
-    //use_ip_aliases                = true
     cluster_secondary_range_name  = google_compute_subnetwork.subnetwork.secondary_ip_range.0.range_name
     services_secondary_range_name = google_compute_subnetwork.subnetwork.secondary_ip_range.1.range_name
   }
@@ -80,10 +70,10 @@ resource "google_container_cluster" "cluster" {
   }
 
   depends_on = [
-    "google_project_service.service",
-    "google_project_iam_member.service-account",
-    "google_project_iam_member.service-account-custom",
-    "google_compute_router_nat.nat",
+    google_project_service.service,
+    google_project_iam_member.service-account,
+    google_project_iam_member.service-account-custom,
+    google_compute_router_nat.nat
   ]
 
 }

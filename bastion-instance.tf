@@ -3,12 +3,6 @@ locals {
   hostname = format("%s-bastion", var.cluster_name)
 }
 
-// Dedicated service account for the Bastion instance
-resource "google_service_account" "bastion" {
-  account_id   = format("%s-bastion-sa", var.cluster_name)
-  display_name = "GKE Bastion SA"
-}
-
 // Allow access to the Bastion Host via SSH
 resource "google_compute_firewall" "bastion-ssh" {
   name          = format("%s-bastion-ssh", var.cluster_name)

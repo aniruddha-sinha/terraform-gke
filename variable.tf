@@ -18,6 +18,19 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "ip_cidr_range" {
+  description = "the ip cidr range for subnetwork"
+  type        = string
+}
+
+variable "secondary_ip_range_one" {
+  type = string
+}
+
+variable "secondary_ip_range_two" {
+  type = string
+}
+
 variable "service_account_iam_roles" {
   type = list(string)
 

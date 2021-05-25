@@ -19,3 +19,9 @@ resource "google_project_iam_member" "service-account-custom" {
   role    = element(var.service_account_custom_iam_roles, count.index)
   member  = format("serviceAccount:%s", google_service_account.gke-sa.email)
 }
+
+// Dedicated service account for the Bastion instance
+resource "google_service_account" "bastion" {
+  account_id   = format("%s-bastion-sa", var.cluster_name)
+  display_name = "GKE Bastion SA"
+}
