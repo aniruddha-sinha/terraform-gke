@@ -1,8 +1,3 @@
-// Bastion Host
-locals {
-  hostname = format("%s-bastion", var.cluster_name)
-}
-
 // Allow access to the Bastion Host via SSH
 resource "google_compute_firewall" "bastion-ssh" {
   name          = format("%s-bastion-ssh", var.cluster_name)
@@ -30,16 +25,17 @@ data "template_file" "startup_script" {
 
 // The Bastion Host
 resource "google_compute_instance" "bastion" {
-  name         = local.hostname
-  machine_type = "g1-small"
-  zone         = var.zone
+  count        = length(var.bastion_zones)
+  name         = "bastion-jump0${count.index}"
+  machine_type = "n1-standard-1"
+  zone         = var.bastion_zones[count.index] //var.zone
   project      = var.project_id
   tags         = ["bastion"]
 
   // Specify the Operating System Family and version.
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-10"
     }
   }
 
@@ -48,12 +44,12 @@ resource "google_compute_instance" "bastion" {
 
   // Define a network interface in the correct subnet.
   network_interface {
-    subnetwork = google_compute_subnetwork.subnetwork.name
+    subnetwork = google_compute_subnetwork.bastion_subnetwork.name
 
     // Add an ephemeral external IP.
-    access_config {
-      // Ephemeral IP
-    }
+    # access_config {
+    #   // Ephemeral IP
+    # }
   }
 
   // Allow the instance to be stopped by terraform when updating configuration

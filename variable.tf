@@ -23,6 +23,15 @@ variable "ip_cidr_range" {
   type        = string
 }
 
+variable "bastion_ip_cidr_range" {
+  description = "the ip cidr range where the bastion instance will be residing"
+  type        = string
+}
+
+variable "bastion_zones" {
+  type = list(string)
+}
+
 variable "secondary_ip_range_one" {
   type = string
 }

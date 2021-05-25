@@ -43,5 +43,10 @@ resource "google_compute_router_nat" "nat" {
       google_compute_subnetwork.subnetwork.secondary_ip_range.1.range_name,
     ]
   }
+
+  subnetwork {
+    name                    = google_compute_subnetwork.bastion_subnetwork.self_link
+    source_ip_ranges_to_nat = ["PRIMARY_IP_RANGE"]
+  }
 }
 

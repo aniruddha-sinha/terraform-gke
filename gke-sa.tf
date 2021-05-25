@@ -25,3 +25,11 @@ resource "google_service_account" "bastion" {
   account_id   = format("%s-bastion-sa", var.cluster_name)
   display_name = "GKE Bastion SA"
 }
+
+//add kubernetes engine admin to bastion node
+resource "google_project_iam_member" "service-account-bastion" {
+  //count   = length(var.service_account_custom_iam_roles)
+  project = var.project_id
+  role    = "roles/container.developer"
+  member  = format("serviceAccount:%s", google_service_account.bastion.email)
+}

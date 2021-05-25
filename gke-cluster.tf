@@ -1,6 +1,5 @@
 resource "google_container_cluster" "cluster" {
   provider = google-beta
-
   name     = var.cluster_name
   project  = var.project_id
   location = var.region
@@ -51,8 +50,16 @@ resource "google_container_cluster" "cluster" {
   // Specify the list of CIDRs which can access the master's API
   master_authorized_networks_config {
     cidr_blocks {
-      display_name = "bastion"
-      cidr_block   = format("%s/32", google_compute_instance.bastion.network_interface.0.network_ip)
+      display_name = "bastion-1"
+      cidr_block   = format("%s/32", google_compute_instance.bastion[0].network_interface.0.network_ip)
+    }
+    cidr_blocks {
+      display_name = "bastion-2"
+      cidr_block   = format("%s/32", google_compute_instance.bastion[1].network_interface.0.network_ip)
+    }
+    cidr_blocks {
+      display_name = "bastion-3"
+      cidr_block   = format("%s/32", google_compute_instance.bastion[2].network_interface.0.network_ip)
     }
   }
   // Configure the cluster to have private nodes and private control plane access only
