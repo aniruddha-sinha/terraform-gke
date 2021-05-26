@@ -77,6 +77,8 @@ variable "project_services" {
     "monitoring.googleapis.com",
     "sqladmin.googleapis.com",
     "securetoken.googleapis.com",
+    "iap.googleapis.com",
+    "cloudkms.googleapis.com"
   ]
   description = <<-EOF
   The GCP APIs that should be enabled in this project.
