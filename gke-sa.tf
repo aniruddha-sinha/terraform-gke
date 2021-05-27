@@ -33,3 +33,25 @@ resource "google_project_iam_member" "service-account-bastion" {
   role    = "roles/container.developer"
   member  = format("serviceAccount:%s", google_service_account.bastion.email)
 }
+
+resource "google_project_iam_binding" "access_user" {
+  role = google_project_iam_custom_role.my_custom_role.id
+
+  members = [
+    "user:asinha0493@gmail.com",
+    "user:asinha161@gmail.com",
+  ]
+}
+
+resource "google_project_iam_custom_role" "my_custom_role" {
+  role_id = "MyCustomRole"
+  title   = "My Custom Role"
+
+  permissions = [
+    "compute.projects.get",
+    "compute.instances.get",
+    "compute.instances.setMetadata",
+    "iam.serviceAccounts.actAs",
+    "iap.tunnelInstances.accessViaIAP",
+  ]
+}
