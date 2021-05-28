@@ -1,20 +1,23 @@
 resource "google_container_node_pool" "private-np-1" {
   provider = google-beta
 
-  name       = "private-np-1"
+  name = "private-np-1"
+  #location of the cluster
   location   = var.region
   cluster    = google_container_cluster.cluster.name
   node_count = "2"
 
+  #location of the node pool (list of zones)
+  node_locations = var.zonal_node_locations
   management {
     auto_repair  = "true"
     auto_upgrade = "true"
   }
 
   node_config {
-    machine_type = "n1-standard-1"
-    disk_type    = "pd-standard"
-    disk_size_gb = 30
+    machine_type = var.node_machine_type    //"n1-standard-1"
+    disk_type    = var.node_disk_type       //"pd-standard"
+    disk_size_gb = var.node_disk_size_in_gb //30
     image_type   = "COS"
 
 

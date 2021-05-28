@@ -49,17 +49,12 @@ resource "google_container_cluster" "cluster" {
 
   // Specify the list of CIDRs which can access the master's API
   master_authorized_networks_config {
-    cidr_blocks {
-      display_name = "bastion-1"
-      cidr_block   = format("%s/32", google_compute_instance.bastion[0].network_interface.0.network_ip)
-    }
-    cidr_blocks {
-      display_name = "bastion-2"
-      cidr_block   = format("%s/32", google_compute_instance.bastion[1].network_interface.0.network_ip)
-    }
-    cidr_blocks {
-      display_name = "bastion-3"
-      cidr_block   = format("%s/32", google_compute_instance.bastion[2].network_interface.0.network_ip)
+    dynamic "cidr_blocks" {
+      for_each = var.zonal_node_locations
+      content {
+        display_name = "bastion-${cidr_blocks.key}"
+        cidr_block   = format("%s/32", google_compute_instance.bastion["${cidr_blocks.key}"].network_interface.0.network_ip)
+      }
     }
   }
   // Configure the cluster to have private nodes and private control plane access only
@@ -80,7 +75,8 @@ resource "google_container_cluster" "cluster" {
     google_project_service.service,
     google_project_iam_member.service-account,
     google_project_iam_member.service-account-custom,
-    google_compute_router_nat.nat
+    google_compute_router_nat.nat,
+    google_compute_instance.bastion
   ]
 
 }

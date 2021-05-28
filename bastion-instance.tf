@@ -1,22 +1,3 @@
-// Allow access to the Bastion Host via SSH
-resource "google_compute_firewall" "bastion-ssh" {
-  name          = format("%s-bastion-ssh", var.cluster_name)
-  network       = google_compute_network.network.name
-  direction     = "INGRESS"
-  project       = var.project_id
-  source_ranges = ["35.235.240.0/20"]
-
-
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-  log_config {
-    metadata = "INCLUDE_ALL_METADATA"
-  }
-  target_tags = ["bastion"]
-}
-
 // The user-data script on Bastion instance provisioning
 data "template_file" "startup_script" {
   template = <<-EOF
@@ -30,7 +11,7 @@ data "template_file" "startup_script" {
 resource "google_compute_instance" "bastion" {
   count        = length(var.bastion_zones)
   name         = "bastion-jump0${count.index}"
-  machine_type = "n1-standard-1"
+  machine_type = var.bastion_node_machine_type  //"n1-standard-1"
   zone         = var.bastion_zones[count.index] //var.zone
   project      = var.project_id
   tags         = ["bastion"]

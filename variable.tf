@@ -8,11 +8,6 @@ variable "region" {
   type        = string
 }
 
-variable "zone" {
-  description = "The zone in which to create the Kubernetes cluster. Must match the region"
-  type        = string
-}
-
 variable "cluster_name" {
   description = "The name to give the new Kubernetes cluster."
   type        = string
@@ -83,4 +78,24 @@ variable "project_services" {
   description = <<-EOF
   The GCP APIs that should be enabled in this project.
   EOF
+}
+
+variable "zonal_node_locations" {
+  type = list(string)
+}
+
+variable "node_machine_type" {
+  type = string
+}
+
+variable "node_disk_type" {
+  type = string
+}
+
+variable "node_disk_size_in_gb" {
+  type = number
+}
+
+variable "bastion_node_machine_type" {
+  type = string
 }
