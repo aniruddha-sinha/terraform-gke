@@ -30,7 +30,7 @@ resource "google_service_account" "bastion" {
 resource "google_project_iam_member" "service-account-bastion" {
   //count   = length(var.service_account_custom_iam_roles)
   project = var.project_id
-  role    = "roles/container.developer"
+  role    = "roles/container.admin"
   member  = format("serviceAccount:%s", google_service_account.bastion.email)
 }
 

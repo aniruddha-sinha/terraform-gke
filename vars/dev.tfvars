@@ -1,4 +1,4 @@
-project_id = "vector-charlie"
+project_id = "zulu-six-four"
 region     = "us-central1"
 
 #network params
@@ -11,12 +11,12 @@ secondary_ip_range_two = "10.2.0.0/20"
 cluster_name = "pvt-gke"
 ###zonal node pool locations
 zonal_node_locations = ["us-central1-a", "us-central1-f"]
-
 #bastion node config
-bastion_node_machine_type = "n1-standard-1"
-bastion_zones             = ["us-central1-c", "us-central1-b", "us-central1-f"]
+bastion_node_machine_type = "f1-micro"
+#as of now you need two linux bastion zones; figuring out how to make it to accept minimum of 1 zone
+bastion_zones             = ["us-central1-c", "us-central1-f"] //, "us-central1-f"
 
 #node config
-node_machine_type    = "n1-standard-1"
+node_machine_type    = "e2-standard-4"
 node_disk_type       = "pd-standard"
-node_disk_size_in_gb = 30
+node_disk_size_in_gb = 70

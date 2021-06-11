@@ -5,7 +5,7 @@ resource "google_container_node_pool" "private-np-1" {
   #location of the cluster
   location   = var.region
   cluster    = google_container_cluster.cluster.name
-  node_count = "2"
+  node_count = "1"
 
   #location of the node pool (list of zones)
   node_locations = var.zonal_node_locations
@@ -13,7 +13,7 @@ resource "google_container_node_pool" "private-np-1" {
     auto_repair  = "true"
     auto_upgrade = "true"
   }
-
+  
   node_config {
     machine_type = var.node_machine_type    //"n1-standard-1"
     disk_type    = var.node_disk_type       //"pd-standard"
