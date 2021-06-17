@@ -73,7 +73,8 @@ variable "project_services" {
     "sqladmin.googleapis.com",
     "securetoken.googleapis.com",
     "iap.googleapis.com",
-    "cloudkms.googleapis.com"
+    "cloudkms.googleapis.com",
+    "spanner.googleapis.com"
   ]
   description = <<-EOF
   The GCP APIs that should be enabled in this project.
@@ -98,4 +99,12 @@ variable "node_disk_size_in_gb" {
 
 variable "bastion_node_machine_type" {
   type = string
+}
+
+variable "spanner_config" {
+  type = string
+}
+
+variable "num_spanner_nodes" {
+  type = number
 }
